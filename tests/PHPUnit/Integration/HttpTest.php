@@ -276,7 +276,7 @@ class HttpTest extends \PHPUnit\Framework\TestCase
     public function testCurlHttpsFailsWithInvalidCertificate()
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessageRegExp('/curl_exec: .*certificate.* /');
+        $this->expectExceptionMessageMatches('/curl_exec: .*certificate.* /');
 
         // use a domain from https://badssl.com/
         Http::sendHttpRequestBy('curl', 'https://self-signed.badssl.com/', 10);
