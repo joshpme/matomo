@@ -134,6 +134,19 @@ class Model
         $db->delete($this->getTable(), 'idsegment = ' . (int) $idSegment);
     }
 
+    /**
+     * Soft delete segments for a user login
+     *
+     * @param string $userLogin
+     */
+    public function deleteSegmentsForUser($userLogin)
+    {
+        /** @var \Zend_Db_Adapter_Pdo_Abstract $db */
+        $db = $this->getDb();
+        $statement = $db->prepare("UPDATE " . $this->getTable() . " SET deleted = 1 WHERE login = ?");
+        $statement->execute(array($userLogin));
+    }
+
     public function updateSegment($idSegment, $segment)
     {
         $idSegment = (int) $idSegment;

@@ -40,6 +40,7 @@ class SegmentEditor extends \Piwik\Plugin
             'Segments.getKnownSegmentsToArchiveForSite'  => 'getKnownSegmentsToArchiveForSite',
             'Segments.getKnownSegmentsToArchiveAllSites' => 'getKnownSegmentsToArchiveAllSites',
             'AssetManager.getJavaScriptFiles'            => 'getJsFiles',
+            'UsersManager.deleteUser'                    => 'cleanupSegmentsForDeletedUser',
             'AssetManager.getStylesheetFiles'            => 'getStylesheetFiles',
             'Template.nextToCalendar'                    => 'getSegmentEditorHtml',
             'System.addSystemSummaryItems'               => 'addSystemSummaryItems',
@@ -142,6 +143,15 @@ class SegmentEditor extends \Piwik\Plugin
         $notification->raw = true;
 
         $dataTableView->notifications[self::NO_DATA_UNPROCESSED_SEGMENT_ID] = $notification;
+    }
+
+    public function cleanupSegmentsForDeletedUser($userLogin) {
+        $model = new Model();
+
+        // TODO: Move public segments under admin of associated website
+
+        // Delete any remaining segments
+        $model->deleteSegmentsForUser($userLogin);
     }
 
     private function getSegmentIfIsUnprocessed()
