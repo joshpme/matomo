@@ -1,9 +1,13 @@
-/**
+/*!
+ * Matomo - free/libre analytics platform
+ *
+ * @link http://matomo.org
+ * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
+
  * Refer a friend
  *
  * Show a refer a friend banner, when hidden this will appear again in 6 months.
  */
-
 var referralBannerKey = 'refer_a_friend';
 var referralBannerHideForMonths = 6;
 var referralBannerCssTarget = '.referFooterBanner';
@@ -53,6 +57,16 @@ var referralBannerHide = function() {
     $(referralBannerCssTarget).addClass("hide");
 };
 
+var referralGenerateEmail = function() {
+    var $emailContents = $(referralBannerCssTarget).find('.emailContents');
+    var to = $emailContents.find('.to').text();
+    var subject = $emailContents.find('.subject').text();
+    var body = $emailContents.find('.body').text();
+
+
+    return "mailto:" + to + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+};
+
 $(function(){
     if (localStorageEnabled() && !referralBannerRecentlyHidden()) {
         // show banner
@@ -64,9 +78,12 @@ $(function(){
             .find(".icon-close")
             .click(referralBannerHide);
 
+        var mailtoContent = referralGenerateEmail();
+
         // bind email option
-        //$(referralBannerCssTarget)
-        //    .find('.referFriend');
+        $(referralBannerCssTarget)
+            .find(".referFriend")
+            .attr("href",mailtoContent);
     }
 });
 
