@@ -394,7 +394,7 @@ class Model
     public function deleteUserOnly($userLogin)
     {
         $db = $this->getDb();
-        $db->query("DELETE FROM " . $this->table . " WHERE login = ?", $userLogin);
+        //$db->query("DELETE FROM " . $this->table . " WHERE login = ?", $userLogin);
 
         /**
          * Triggered after a user has been deleted.
