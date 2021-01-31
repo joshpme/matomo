@@ -67,6 +67,16 @@ var referralGenerateEmail = function() {
     return "mailto:" + to + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
 };
 
+var referralClickShareLink = function(){
+    setTimeout(function(){
+        $(referralBannerCssTarget).find(".defaultMessage").addClass("hide");
+        $(referralBannerCssTarget).find(".thankYou").removeClass("hide");
+        setTimeout(function(){
+            referralBannerHide();
+        },1000);
+    },1000);
+};
+
 $(function(){
     if (localStorageEnabled() && !referralBannerRecentlyHidden()) {
         // show banner
@@ -84,6 +94,9 @@ $(function(){
         $(referralBannerCssTarget)
             .find(".referFriend")
             .attr("href",mailtoContent);
+
+        // bind after click event
+        $(referralBannerCssTarget).on("click", ".share-link", referralClickShareLink);
     }
 });
 
