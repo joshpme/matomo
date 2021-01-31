@@ -315,6 +315,21 @@ class Model
         return $users;
     }
 
+    /**
+     * Returns a super user that is not the specified user [parameter]
+     *
+     * @param string $login The user you do not wish to find
+     * @return null|array User row or null
+     */
+    public function findDifferentSuperUser($login)
+    {
+        $db = $this->getDb();
+        $user = $db->fetchAll("SELECT login
+                                FROM " . Common::prefixTable("user") . "
+                                WHERE superuser_access = 1 AND login != ?", array($login));
+        return $user;
+    }
+
     public function updateUser($userLogin, $hashedPassword, $email, $alias, $tokenAuth)
     {
         $fields = array(

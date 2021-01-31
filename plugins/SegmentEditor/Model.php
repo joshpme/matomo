@@ -134,6 +134,12 @@ class Model
         $db->delete($this->getTable(), 'idsegment = ' . (int) $idSegment);
     }
 
+    public function transferPublicSegmentToNewUser($oldLogin, $newLogin) {
+        $db = $this->getDb();
+        $statement = $db->prepare("UPDATE " . $this->getTable() . " SET login = ? WHERE enable_all_users = 1 AND login = ?");
+        $statement->execute(array($newLogin, $oldLogin));
+    }
+
     /**
      * Soft delete segments for a user login
      *

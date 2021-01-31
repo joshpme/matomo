@@ -148,7 +148,15 @@ class SegmentEditor extends \Piwik\Plugin
     public function cleanupSegmentsForDeletedUser($userLogin) {
         $model = new Model();
 
-        // TODO: Move public segments under admin of associated website
+        $userModel = new \Piwik\Plugins\UsersManager\Model();
+
+        // Find a super user (that is not the current user)
+        $superUsers = $userModel->findDifferentSuperUser($userLogin);
+
+        // If a result is found, transfer the public segments to that user
+        if (count($superUsers) > 0) {
+            $model->transferPublicSegmentToNewUser($userLogin, $superUsers[0]['login']);
+        }
 
         // Delete any remaining segments
         $model->deleteSegmentsForUser($userLogin);
